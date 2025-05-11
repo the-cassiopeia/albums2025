@@ -1,6 +1,9 @@
 import csv
+import datetime
 
-HTML_START = """
+FORMATTED_DATE = datetime.datetime.now().strftime("%B %d, %Y")
+
+HTML_START = f"""
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +17,7 @@ HTML_START = """
 <body>
     <div class="container">
         <h1>Albums 2025</h1>
+        <p class="date">Last updated: {FORMATTED_DATE}</p>
         <h2>Rating Scheme</h2>
         <div class="rating-guide">
             <p><strong>5/5</strong> - amazing - AOTY contender</p>
@@ -74,5 +78,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#             <li><strong>Havukruunu</strong> – <em>Tavastland</em> <span class="rating">(3.5/5)</span> <span class="genre">melodic black/folk</span></li>
