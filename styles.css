@@ -4,13 +4,12 @@ body {
     color: #e5e5e5;
     margin: 0 auto;
     padding: 0;
-    width: 900px;
+    width: 800px;
 }
 
 
 .container {
     max-width: 100%;
-    padding: 10px;
 }
 
 
