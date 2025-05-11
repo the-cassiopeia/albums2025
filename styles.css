@@ -2,15 +2,17 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #111;
     color: #e5e5e5;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
+    width: 900px;
 }
 
+
 .container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
+    max-width: 100%;
+    padding: 10px;
 }
+
 
 .date {
     font-size: 1.2em;
@@ -86,37 +88,4 @@ h2 {
 
 .rating-guide p {
     margin: 4px 0;
-}
-
-/* Media query for smaller screens (e.g., mobile) */
-@media (max-width: 600px) {
-    .album-list li {
-        font-size: 1rem;
-        /* Reduce the font size for album list items */
-    }
-
-    .rating {
-        font-size: 1rem;
-        /* Reduce the font size for ratings */
-    }
-
-    .genre {
-        font-size: 0.9rem;
-        /* Reduce the font size for genres */
-    }
-
-    h1 {
-        font-size: 2rem;
-        /* Optionally reduce the main heading size */
-    }
-
-    h2 {
-        font-size: 1.3rem;
-        /* Optionally reduce the subheading size */
-    }
-
-    .date {
-        font-size: 1em;
-        /* Optionally reduce the date size */
-    }
 }
