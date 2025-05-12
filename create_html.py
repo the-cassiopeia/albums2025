@@ -1,5 +1,6 @@
 import csv
 import datetime
+import sys
 
 FORMATTED_DATE = datetime.datetime.now().strftime("%B %d, %Y")
 
@@ -44,20 +45,34 @@ def main():
 
     HTML_ALBUMS = []
 
+    all_youtubes = set()
+
     with open("albums.csv", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            assert len(row) == 4
-            assert row["Artist"] is not None
-            assert row["Album"] is not None
-            assert row["Rating"] is not None
-            assert 1 <= float(row["Rating"]) <= 5
-            assert row["Genre"] is not None
+            try:
+                assert len(row) == 5
+                assert row["Artist"] is not None
+                assert row["Album"] is not None
+                assert row["Rating"] is not None
+                assert 1 <= float(row["Rating"]) <= 5
+                assert row["Genre"] is not None
+                assert row["Youtube"] is not None
+                assert row["Youtube"].startswith("https://www.youtube.com/watch?v=")
+                assert row["Youtube"] not in all_youtubes
+            except AssertionError:
+                print("Error while parsing the following row:")
+                print(row)
+                sys.exit(1)
+
+            all_youtubes.add(row["Youtube"])
 
             HTML_ALBUMS.append(
                 "".join(
                     [
-                        "            <li><strong>",
+                        "            <li>",
+                        f'<a href="{row["Youtube"]}" target="_blank" class="icon-link"><img src="youtube.png" class="icon"></a>',
+                        "<strong>",
                         row["Artist"],
                         "</strong> – <em>",
                         row["Album"],
