@@ -2,9 +2,11 @@ import csv
 import datetime
 import sys
 
+import minify_html
+
 FORMATTED_DATE = datetime.datetime.now().strftime("%B %d, %Y")
 
-HTML_START = f"""
+HTML_START = """
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,9 +14,107 @@ HTML_START = f"""
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Album Ratings</title>
-    <link rel="stylesheet" href="styles.css" />
-</head>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #111;
+            color: #e5e5e5;
+            margin: 0 auto;
+            padding: 0;
+            width: 675px;
+        }
 
+        .container {
+            max-width: 100%;
+        }
+
+        .date {
+            font-size: 1.0em;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #538146;
+            font-size: 2.0rem;
+        }
+
+        h2 {
+            color: #538146;
+            font-size: 1.2rem;
+        }
+
+        .album-list {
+            counter-reset: album-counter;
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .album-list li {
+            counter-increment: album-counter;
+            background-color: #1e1e1e;
+            padding: 6px 20px;
+            border-left: 5px solid #538146;
+            border-radius: 10px;
+            font-size: 1.0rem;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+            padding-left: 45px;
+        }
+
+        .album-list li::before {
+            content: counter(album-counter) ".";
+            position: absolute;
+            left: 10px;
+            font-weight: bold;
+            color: #538146;
+        }
+
+        .rating {
+            font-weight: bold;
+            color: #538146;
+            margin-left: 8px;
+        }
+
+        .genre {
+            font-style: italic;
+            color: #888;
+            margin-left: auto;
+        }
+
+        .rating-guide {
+            background-color: #1e1e1e;
+            border-left: 5px solid #538146;
+            padding: 6px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1.0rem;
+            color: #f0f0f0;
+        }
+
+        .rating-guide p {
+            margin: 4px 0;
+        }
+
+        .icon-link {
+            display: inline-block;
+        }
+
+        .icon {
+            height: 1.3em;
+            vertical-align: text-top;
+        }
+    </style>
+</head>
+"""
+
+HTML_BODY = f"""
 <body>
     <div class="container">
         <h1>Albums 2025</h1>
@@ -85,10 +185,13 @@ def main():
                 )
             )
 
+    html_full = HTML_START + HTML_BODY + "\n".join(HTML_ALBUMS) + HTML_END
+    html_minified = minify_html.minify(
+        html_full, minify_js=True, remove_processing_instructions=True
+    )
+
     with open("index.html", "w", encoding="utf-8") as f:
-        f.write(HTML_START)
-        f.write("\n".join(HTML_ALBUMS))
-        f.write(HTML_END)
+        f.write(html_minified)
 
 
 if __name__ == "__main__":
