@@ -2,8 +2,6 @@ import csv
 import datetime
 import sys
 
-import minify_html
-
 FORMATTED_DATE = datetime.datetime.now().strftime("%B %d, %Y")
 
 HTML_START = """
@@ -241,9 +239,6 @@ def main():
             )
 
     html_full = HTML_START + HTML_BODY + "\n".join(HTML_ALBUMS) + HTML_END
-    # html_minified = minify_html.minify(
-    #     html_full, minify_js=True, remove_processing_instructions=True
-    # )
 
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_full)
