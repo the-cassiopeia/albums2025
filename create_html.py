@@ -91,7 +91,6 @@ HTML_START = """
             padding: 6px 20px;
             border-radius: 10px;
             margin-bottom: 10px;
-            font-size: 1rem;
             color: #f0f0f0;
         }
 
