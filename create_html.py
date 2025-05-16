@@ -8,186 +8,179 @@ HTML_START = """
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0" name="viewport">
-    <title>Album Ratings</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #111;
-            color: #e5e5e5;
-            margin: 0 auto;
-            padding: 0;
-            width: 675px;
-        }
+  <meta charset="UTF-8">
+  <meta content="width=device-width,initial-scale=1.0" name="viewport">
+  <title>Album Ratings</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #111;
+      color: #e5e5e5;
+      margin: 0 auto;
+      padding: 0;
+      width: 675px;
+    }
+ 
+    .container {
+      max-width: 100%;
+    }
 
-        .container {
-            max-width: 100%;
-        }
+    .date {
+      font-size: 1em;
+      text-align: center;
+    }
 
-        .date {
-            font-size: 1em;
-            text-align: center;
-        }
+    h1 {
+      text-align: center;
+      color: #538146;
+      font-size: 2rem;
+    }
 
-        h1 {
-            text-align: center;
-            color: #538146;
-            font-size: 2rem;
-        }
+    h2 {
+      color: #538146;
+      font-size: 1.2rem;
+    }
 
-        h2 {
-            color: #538146;
-            font-size: 1.2rem;
-        }
+    .album-list {
+      counter-reset: album-counter;
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-        .album-list {
-            counter-reset: album-counter;
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+    .album-list li {
+      counter-increment: album-counter;
+      background-color: #1e1e1e;
+      padding: 6px 20px;
+      border-left: 5px solid #538146;
+      border-radius: 10px;
+      font-size: 1rem;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+      padding-left: 45px;
+    }
 
-        .album-list li {
-            counter-increment: album-counter;
-            background-color: #1e1e1e;
-            padding: 6px 20px;
-            border-left: 5px solid #538146;
-            border-radius: 10px;
-            font-size: 1rem;
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            gap: 5px;
-            position: relative;
-            padding-left: 45px;
-        }
+    .album-list li::before {
+      content: counter(album-counter) ".";
+      position: absolute;
+      left: 10px;
+      font-weight: 700;
+      color: #538146;
+    }
 
-        .album-list li::before {
-            content: counter(album-counter) ".";
-            position: absolute;
-            left: 10px;
-            font-weight: 700;
-            color: #538146;
-        }
+    .rating {
+      font-weight: 700;
+      color: #538146;
+      margin-left: 8px;
+    }
 
-        .rating {
-            font-weight: 700;
-            color: #538146;
-            margin-left: 8px;
-        }
+    .genre {
+      font-style: italic;
+      color: #888;
+      margin-left: auto;
+    }
 
-        .genre {
-            font-style: italic;
-            color: #888;
-            margin-left: auto;
-        }
+    .rating-guide {
+      background-color: #1e1e1e;
+      border-left: 5px solid #538146;
+      padding: 6px 20px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      color: #f0f0f0;
+    }
 
-        .rating-guide {
-            background-color: #1e1e1e;
-            border-left: 5px solid #538146;
-            padding: 6px 20px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            color: #f0f0f0;
-        }
+    .rating-guide p {
+      margin: 4px 0;
+    }
 
-        .rating-guide p {
-            margin: 4px 0;
-        }
+    .icon-link {
+      display: inline-block;
+    }
 
-        .icon-link {
-            display: inline-block;
-        }
+    .icon {
+      height: 1.3em;
+      vertical-align: text-top;
+    }
 
-        .icon {
-            height: 1.3em;
-            vertical-align: text-top;
-        }
+    .filter-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+    }
 
-        .filter-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-        }
+    .filter-container h2 {
+      margin: 0;
+    }
 
-        .filter-container h2 {
-            margin: 0;
-        }
-
-        .genre-search-input {
-            text-align: center;
-            box-sizing: border-box;
-            font-style: italic;
-            background-color: #1e1e1e;
-            color: #e5e5e5;
-            border: 0px solid #444;
-            padding: 6px 10px;
-            width: 150px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-        }
-    </style>
+    .genre-search-input {
+      text-align: center;
+      box-sizing: border-box;
+      font-style: italic;
+      background-color: #1e1e1e;
+      color: #e5e5e5;
+      border: 0px solid #444;
+      padding: 6px 10px;
+      width: 150px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
 """
 
 HTML_BODY = f"""
 <body>
-    <div class="container">
-        <h1>Albums 2025</h1>
-        <p class="date">Last updated: {FORMATTED_DATE}</p>
-
-        <h2>Rating Scheme</h2>
-        <div class="rating-guide">
-            <p><strong>5/5</strong> - amazing - AOTY contender</p>
-            <p><strong>4/5</strong> - great - very memorable</p>
-            <p><strong>3/5</strong> - pretty good - would listen again</p>
-            <p><strong>2/5</strong> - average - won't listen again</p>
-            <p><strong>1/5</strong> - bad - has major issues</p>
-        </div>
-
-        <div class="filter-container">
-            <h2>Album Ranking</h2>
-            <input placeholder="filter by genre"
-                   class="genre-search-input" id="genreSearch"
-                   onkeyup="filterByGenre()">
-        </div>
-
-        <ol class="album-list">
+  <div class="container">
+    <h1>Albums 2025</h1>
+    <p class="date">Last updated: {FORMATTED_DATE}</p>
+    <h2>Rating Scheme</h2>
+    <div class="rating-guide">
+      <p><strong>5/5</strong> - amazing - AOTY contender</p>
+      <p><strong>4/5</strong> - great - very memorable</p>
+      <p><strong>3/5</strong> - pretty good - would listen again</p>
+      <p><strong>2/5</strong> - average - won't listen again</p>
+      <p><strong>1/5</strong> - bad - has major issues</p>
+    </div>
+    <div class="filter-container">
+      <h2>Album Ranking</h2>
+      <input placeholder="filter by genre" class="genre-search-input" id="genreSearch" onkeyup="filterByGenre()">
+    </div>
+    <ol class="album-list">
 """
 
 
 HTML_END = """
-        </ol>
-    </div>
+    </ol>
+  </div>
+  <script defer>
+    const genreSearchInput = document.getElementById('genreSearch');
 
-    <script defer>
-        const genreSearchInput = document.getElementById('genreSearch');
+    const albumData = Array.from(document.querySelectorAll('.album-list li')).map(listItem => {
+      const genreElement = listItem.querySelector('.genre');
+      return {
+        element: listItem,
+        genreText: genreElement ? genreElement.textContent.toLowerCase() : ''
+      };
+    });
 
-        const albumData = Array.from(document.querySelectorAll('.album-list li')).map(listItem => {
-            const genreElement = listItem.querySelector('.genre');
-            return {
-                element: listItem,
-                genreText: genreElement ? genreElement.textContent.toLowerCase() : ''
-            };
-        });
+    function filterByGenre() {
+      const searchTerm = genreSearchInput.value.toLowerCase();
 
-        function filterByGenre() {
-            const searchTerm = genreSearchInput.value.toLowerCase();
-
-            albumData.forEach(album => {
-                if (album.genreText.includes(searchTerm)) {
-                    album.element.style.display = 'flex';
-                } else {
-                    album.element.style.display = 'none';
-                }
-            });
+      albumData.forEach(album => {
+        if (album.genreText.includes(searchTerm)) {
+          album.element.style.display = 'flex';
+        } else {
+          album.element.style.display = 'none';
         }
-    </script>
-
+      });
+    }
+  </script>
 </body>
 </html>
 """
@@ -222,7 +215,7 @@ def main():
             HTML_ALBUMS.append(
                 "".join(
                     [
-                        "            <li>",
+                        "      <li>",
                         f'<a href="{row["Youtube"]}" target="_blank" rel="noopener noreferrer" class="icon-link"><img class="icon" src="youtube.png"></a>',
                         "<strong>",
                         row["Artist"],
@@ -237,10 +230,11 @@ def main():
                 )
             )
 
-    html_full = HTML_START + HTML_BODY + "\n".join(HTML_ALBUMS) + HTML_END
-
     with open("index.html", "w", encoding="utf-8") as f:
-        f.write(html_full)
+        f.write(HTML_START)
+        f.write(HTML_BODY)
+        f.write("\n".join(HTML_ALBUMS))
+        f.write(HTML_END)
 
 
 if __name__ == "__main__":
