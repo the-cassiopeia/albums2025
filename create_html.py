@@ -18,7 +18,7 @@ HTML_START = """
       color: #e5e5e5;
       margin: 0 auto;
       padding: 0;
-      width: 675px;
+      width: 695px;
     }
  
     .container {
@@ -144,7 +144,7 @@ HTML_BODY = f"""
       <p><strong>5/5</strong> - amazing - AOTY contender</p>
       <p><strong>4/5</strong> - great - very memorable</p>
       <p><strong>3/5</strong> - pretty good - would listen again</p>
-      <p><strong>2/5</strong> - average - won't listen again</p>
+      <p><strong>2/5</strong> - disappointing - won't listen again</p>
       <p><strong>1/5</strong> - bad - has major issues</p>
     </div>
     <div class="filter-container">
@@ -205,7 +205,7 @@ def main():
                 assert row["Youtube"] is not None
                 assert row["Youtube"].startswith("https://www.youtube.com/watch?v=")
                 assert row["Youtube"] not in all_youtubes
-            except AssertionError:
+            except (AssertionError, ValueError):
                 print("Error while parsing the following row:")
                 print(row)
                 sys.exit(1)
