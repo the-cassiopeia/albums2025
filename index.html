@@ -88,7 +88,7 @@
       height: 1.2em;
       text-align: center;
       line-height: 1.1em;
-      font-size: 1.0em;
+      font-size: 0.95em;
       user-select: none;
     }
 
@@ -311,6 +311,21 @@
     }
 
     initializeAlbumData();
+
+    // Toggle tooltip on tap for mobile
+    document.getElementById('ratingInfoTrigger').addEventListener('click', function (e) {
+      e.stopPropagation();
+      const tooltip = this.querySelector('.rating-tooltip');
+      const isVisible = tooltip.style.display === 'block';
+      document.querySelectorAll('.rating-tooltip').forEach(t => t.style.display = 'none');
+      tooltip.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // Hide tooltip when tapping elsewhere
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.rating-tooltip').forEach(t => t.style.display = 'none');
+    });
+
   </script>
 </body>
 </html>
