@@ -39,7 +39,7 @@ HTML_START = """
       counter-reset: album-counter;
       display: flex;
       flex-direction: column;
-      gap: 0;
+      gap: 3px;
       padding: 0;
       list-style: none;
     }
