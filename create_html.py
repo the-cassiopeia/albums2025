@@ -237,6 +237,15 @@ HTML_END = """
     document.addEventListener('click', () => {
       tooltip.style.display = 'none';
     });
+
+    // keep tooltip visible on hover (desktop)
+    trigger.addEventListener('mouseenter', () => {
+      tooltip.style.display = 'block';
+    });
+
+    trigger.addEventListener('mouseleave', () => {
+      tooltip.style.display = 'none';
+    });
   </script>
 </body>
 </html>
