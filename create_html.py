@@ -226,25 +226,26 @@ HTML_END = """
     const trigger = document.getElementById('ratingInfoTrigger');
     const tooltip = document.getElementById('ratingTooltip');
 
-    // Show/hide tooltip on tap (mobile) or click (fallback)
-    trigger.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevents bubbling
-      const isVisible = tooltip.style.display === 'block';
-      tooltip.style.display = isVisible ? 'none' : 'block';
+    // Toggle tooltip on tap (mobile) or click
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation(); // Prevent bubbling to document
+      tooltip.style.display = tooltip.style.display === 'block' ? 'none' : 'block';
     });
 
-    // Hide tooltip on outside tap
-    document.addEventListener('click', () => {
-      tooltip.style.display = 'none';
-    });
-
-    // keep tooltip visible on hover (desktop)
+    // Desktop hover support
     trigger.addEventListener('mouseenter', () => {
       tooltip.style.display = 'block';
     });
-
     trigger.addEventListener('mouseleave', () => {
       tooltip.style.display = 'none';
+    });
+
+    // Ensure document click listener only fires after this listener completes
+    document.addEventListener('click', function (e) {
+      // Only close if the click wasn't inside the tooltip or trigger
+      if (!trigger.contains(e.target)) {
+        tooltip.style.display = 'none';
+      }
     });
   </script>
 </body>
