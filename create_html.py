@@ -15,161 +15,126 @@ HTML_START = """
   <title>Album Ratings</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #111;
       color: #e5e5e5;
+      background-color: #111;
+      width: 660px;
       margin: 0 auto;
       padding: 0;
-      width: 660px;
+      font-family: 'Segoe UI', sans-serif;
     }
- 
-    .container {
-      max-width: 100%;
-    }
-
-    .date {
-      font-size: 1em;
-      text-align: center;
-      margin: 0;
-    }
-
+    .container { max-width: 100%; }
+    .date { text-align: center; margin: 0; font-size: 1em; }
     h1 {
       text-align: center;
       color: #538146;
+      margin: 5px 0;
       font-size: 2rem;
-      margin-top: 5px;
-      margin-bottom: 5px;
     }
-
     h2 {
       color: #538146;
       font-size: 1.2rem;
+      margin: 0;
     }
-
     .album-list {
       counter-reset: album-counter;
-      list-style: none;
-      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 0px;
+      gap: 0;
+      padding: 0;
+      list-style: none;
     }
-
     .album-list li {
       counter-increment: album-counter;
-      background-color: #1e1e1e;
-      padding: 3px 10px;
+      background: #1e1e1e;
       border-radius: 20px;
-      font-size: 1rem;
       display: flex;
-      flex-wrap: nowrap;
       align-items: center;
       gap: 4px;
+      padding: 3px 10px 3px 45px;
+      font-size: 1rem;
       position: relative;
-      padding-left: 45px;
     }
-
     .album-list li::before {
       content: counter(album-counter) ".";
+      color: #538146;
+      font-weight: 700;
       position: absolute;
       left: 10px;
-      font-weight: 700;
-      color: #538146;
     }
-
     .rating {
-      font-weight: 700;
       color: #538146;
       margin-left: 8px;
+      font-weight: 700;
     }
-
     .rating-info-trigger {
-      position: relative;
-      display: inline-block;
-      margin-left: 8px;
       cursor: help;
       color: #538146;
-      font-weight: bold;
+      text-align: center;
+      user-select: none;
       border: 2px solid #538146;
       border-radius: 50%;
       width: 1.2em;
       height: 1.2em;
-      text-align: center;
+      margin-left: 8px;
+      font-size: .95em;
+      font-weight: 700;
       line-height: 1.1em;
-      font-size: 0.95em;
-      user-select: none;
+      display: inline-block;
+      position: relative;
     }
-
     .rating-tooltip {
       display: none;
       position: absolute;
       top: 125%;
       left: 50%;
-      transform: translateX(-50%);
-      background-color: #2a2a2a;
+      transform: translate(-50%);
+      background: #2a2a2a;
       color: #e5e5e5;
       border: 2px solid #538146;
       border-radius: 8px;
-      padding: 3px 10px;
       width: 320px;
+      padding: 3px 10px;
+      font-size: 1rem;
+      font-weight: 400;
       z-index: 100;
-      font-size: 1.0rem;
-      font-weight: normal;
       text-align: left;
     }
-
     .rating-tooltip p {
       margin: 5px 0;
     }
-
     .rating-tooltip p strong {
       color: #538146;
     }
-
     .rating-info-trigger:hover .rating-tooltip,
     .rating-info-trigger:focus .rating-tooltip,
     .rating-info-trigger:focus-within .rating-tooltip {
       display: block;
     }
-
     .genre {
-      font-style: italic;
-      font-size: 0.9rem;
       color: #888;
       margin-left: auto;
+      font-size: .9rem;
+      font-style: italic;
     }
-
-    .icon-link {
-      display: inline-block;
-    }
-
-    .icon {
-      height: 1.3em;
-      vertical-align: text-top;
-    }
-
+    .icon-link { display: inline-block; }
+    .icon { vertical-align: text-top; height: 1.3em; }
     .filter-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 15px 0;
     }
-
-    .filter-container h2 {
-      margin: 0;
-    }
-
     .genre-search-input {
       text-align: center;
       box-sizing: border-box;
-      font-style: italic;
-      background-color: #1e1e1e;
       color: #e5e5e5;
-      border: 0px solid #444;
-      padding: 6px 10px;
-      width: 150px;
+      background: #1e1e1e;
+      border: 0 solid #444;
       border-radius: 20px;
-      font-size: 0.9rem;
+      width: 150px;
+      padding: 6px 10px;
+      font-size: .9rem;
+      font-style: italic;
     }
   </style>
 </head>
@@ -206,30 +171,28 @@ HTML_END = """
   </div>
   <script defer>
     const genreSearchInput = document.getElementById('genreSearch');
+    const ratingInfoTrigger = document.getElementById('ratingInfoTrigger');
     let albumData = [];
 
     function initializeAlbumData() {
-      albumData = Array.from(document.querySelectorAll('.album-list li')).map(item => {
-        const genre = item.querySelector('.genre')?.textContent.toLowerCase() || '';
-        return { element: item, genreText: genre };
-      });
+      albumData = Array.from(document.querySelectorAll('.album-list li')).map(li => ({
+        element: li,
+        genreText: li.querySelector('.genre')?.textContent.toLowerCase() || ''
+      }));
     }
 
     function filterByGenre() {
       if (!albumData.length) initializeAlbumData();
-      const searchTerm = genreSearchInput.value.toLowerCase();
+      const filter = genreSearchInput.value.toLowerCase();
       albumData.forEach(({ element, genreText }) => {
-        element.style.display = genreText.includes(searchTerm) ? 'flex' : 'none';
+        element.style.display = genreText.includes(filter) ? 'flex' : 'none';
       });
     }
 
     initializeAlbumData();
 
-    document.addEventListener('click', function (e) {
-      const trigger = document.getElementById('ratingInfoTrigger');
-      if (!trigger.contains(e.target)) {
-        trigger.blur(); // Remove focus = tooltip disappears
-      }
+    document.addEventListener('click', e => {
+      if (!ratingInfoTrigger.contains(e.target)) ratingInfoTrigger.blur();
     });
   </script>
 </body>
@@ -281,9 +244,8 @@ def main():
                 )
             )
 
-    html_full = HTML_START + HTML_BODY + "\n".join(HTML_ALBUMS) + HTML_END
     html_minified = minify_html.minify(
-        html_full,
+        HTML_START + HTML_BODY + "\n".join(HTML_ALBUMS) + HTML_END,
         minify_js=True,
         minify_css=True,
         minify_doctype=True,
