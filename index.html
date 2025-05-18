@@ -12,7 +12,7 @@
       color: #e5e5e5;
       margin: 0 auto;
       padding: 0;
-      width: 695px;
+      width: 660px;
     }
  
     .container {
@@ -22,12 +22,15 @@
     .date {
       font-size: 1em;
       text-align: center;
+      margin: 0;
     }
 
     h1 {
       text-align: center;
       color: #538146;
       font-size: 2rem;
+      margin-top: 5px;
+      margin-bottom: 5px;
     }
 
     h2 {
@@ -41,20 +44,19 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0px;
     }
 
     .album-list li {
       counter-increment: album-counter;
       background-color: #1e1e1e;
-      padding: 6px 20px;
-      border-left: 5px solid #538146;
-      border-radius: 10px;
+      padding: 3px 10px;
+      border-radius: 20px;
       font-size: 1rem;
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       position: relative;
       padding-left: 45px;
     }
@@ -73,23 +75,58 @@
       margin-left: 8px;
     }
 
+    .rating-info-trigger {
+      position: relative;
+      display: inline-block;
+      margin-left: 8px;
+      cursor: help;
+      color: #538146;
+      font-weight: bold;
+      border: 2px solid #538146;
+      border-radius: 50%;
+      width: 1.2em;
+      height: 1.2em;
+      text-align: center;
+      line-height: 1.1em;
+      font-size: 1.0em;
+      user-select: none;
+    }
+
+    .rating-tooltip {
+      display: none;
+      position: absolute;
+      top: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #2a2a2a;
+      color: #e5e5e5;
+      border: 2px solid #538146;
+      border-radius: 8px;
+      padding: 3px 10px;
+      width: 320px;
+      z-index: 100;
+      font-size: 1.0rem;
+      font-weight: normal;
+      text-align: left;
+    }
+
+    .rating-tooltip p {
+      margin: 5px 0;
+    }
+
+    .rating-tooltip p strong {
+      color: #538146;
+    }
+
+    .rating-info-trigger:hover .rating-tooltip {
+      display: block;
+    }
+  
     .genre {
       font-style: italic;
+      font-size: 0.9rem;
       color: #888;
       margin-left: auto;
-    }
-
-    .rating-guide {
-      background-color: #1e1e1e;
-      border-left: 5px solid #538146;
-      padding: 6px 20px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      color: #f0f0f0;
-    }
-
-    .rating-guide p {
-      margin: 4px 0;
     }
 
     .icon-link {
@@ -121,8 +158,8 @@
       border: 0px solid #444;
       padding: 6px 10px;
       width: 150px;
-      border-radius: 6px;
-      font-size: 0.95rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -130,23 +167,29 @@
 <body>
   <div class="container">
     <h1>Albums 2025</h1>
-    <p class="date">Last updated: May 17, 2025</p>
-    <h2>Rating Scheme</h2>
-    <div class="rating-guide">
-      <p><strong>5/5</strong> - amazing - AOTY contender</p>
-      <p><strong>4/5</strong> - great - very memorable</p>
-      <p><strong>3/5</strong> - pretty good - would listen again</p>
-      <p><strong>2/5</strong> - disappointing - won't listen again</p>
-      <p><strong>1/5</strong> - bad - has major issues</p>
-    </div>
+    <p class="date">Last updated: May 18, 2025</p>
     <div class="filter-container">
-      <h2>Album Ranking</h2>
-      <input placeholder="filter by genre" class="genre-search-input" id="genreSearch" onkeyup="filterByGenre()">
+      <h2>
+        Personal Album Ranking
+        <span class="rating-info-trigger" aria-label="Rating info" role="tooltip">
+          ?
+          <div class="rating-tooltip">
+            <p><strong>Rating Scheme</strong></p>
+            <p><strong>5/5</strong> – amazing – AOTY contender</p>
+            <p><strong>4/5</strong> – great – very memorable</p>
+            <p><strong>3/5</strong> – pretty good – would listen again</p>
+            <p><strong>2/5</strong> – disappointing – won’t listen again</p>
+            <p><strong>1/5</strong> – bad – has major issues</p>
+          </div>
+        </span>
+      </h2>
+      <input type="text" placeholder="filter by genre" class="genre-search-input" id="genreSearch" onkeyup="filterByGenre()" />
     </div>
     <ol class="album-list">
       <li><a href="https://www.youtube.com/watch?v=zaSiRkWC3IA" target="_blank" rel="noopener noreferrer" class="icon-link"><img class="icon" src="youtube.png"></a><strong>Hagane</strong> – <em>Top of the Tower</em> <span class="rating">(5/5)</span> <span class="genre">power</span></li>
       <li><a href="https://www.youtube.com/watch?v=k72FFt5rKFM" target="_blank" rel="noopener noreferrer" class="icon-link"><img class="icon" src="youtube.png"></a><strong>Beachside Talks</strong> – <em>Hokorobi</em> <span class="rating">(5/5)</span> <span class="genre">dream pop/shoegaze</span></li>
       <li><a href="https://www.youtube.com/watch?v=AG3VYCHH-R8" target="_blank" rel="noopener noreferrer" class="icon-link"><img class="icon" src="youtube.png"></a><strong>Sold Soul</strong> – <em>Just Like That, I Disappear Entirely</em> <span class="rating">(5/5)</span> <span class="genre">deathcore</span></li>
+      <li><a href="https://www.youtube.com/watch?v=uHSW37E69yM" target="_blank" rel="noopener noreferrer" class="icon-link"><img class="icon" src="youtube.png"></a><strong>Lástima</strong> – <em>A Pain Bloomed From My Lungs</em> <span class="rating">(5/5)</span> <span class="genre">post-black</span></li>
       <li><a href="https://www.youtube.com/watch?v=jHoNNSVIa-A" target="_blank" rel="noopener noreferrer" class="icon-link"><img class="icon" src="youtube.png"></a><strong>Belnejoum</strong> – <em>Dark Tales of Zarathustra</em> <span class="rating">(5/5)</span> <span class="genre">symphonic black</span></li>
       <li><a href="https://www.youtube.com/watch?v=OzG3yCxhZiw" target="_blank" rel="noopener noreferrer" class="icon-link"><img class="icon" src="youtube.png"></a><strong>1st0</strong> – <em>2nd Chapter</em> <span class="rating">(5/5)</span> <span class="genre">power</span></li>
       <li><a href="https://www.youtube.com/watch?v=uVIFEwa9JZg" target="_blank" rel="noopener noreferrer" class="icon-link"><img class="icon" src="youtube.png"></a><strong>Saor</strong> – <em>Amidst the Ruins</em> <span class="rating">(5/5)</span> <span class="genre">atmospheric black/folk</span></li>
@@ -250,26 +293,24 @@
   </div>
   <script defer>
     const genreSearchInput = document.getElementById('genreSearch');
+    let albumData = [];
 
-    const albumData = Array.from(document.querySelectorAll('.album-list li')).map(listItem => {
-      const genreElement = listItem.querySelector('.genre');
-      return {
-        element: listItem,
-        genreText: genreElement ? genreElement.textContent.toLowerCase() : ''
-      };
-    });
-
-    function filterByGenre() {
-      const searchTerm = genreSearchInput.value.toLowerCase();
-
-      albumData.forEach(album => {
-        if (album.genreText.includes(searchTerm)) {
-          album.element.style.display = 'flex';
-        } else {
-          album.element.style.display = 'none';
-        }
+    function initializeAlbumData() {
+      albumData = Array.from(document.querySelectorAll('.album-list li')).map(item => {
+        const genre = item.querySelector('.genre')?.textContent.toLowerCase() || '';
+        return { element: item, genreText: genre };
       });
     }
+
+    function filterByGenre() {
+      if (!albumData.length) initializeAlbumData();
+      const searchTerm = genreSearchInput.value.toLowerCase();
+      albumData.forEach(({ element, genreText }) => {
+        element.style.display = genreText.includes(searchTerm) ? 'flex' : 'none';
+      });
+    }
+
+    initializeAlbumData();
   </script>
 </body>
 </html>
