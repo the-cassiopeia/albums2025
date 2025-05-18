@@ -237,7 +237,7 @@ def main():
                 "".join(
                     [
                         "      <li>",
-                        f'<a href="{row["Youtube"]}" target="_blank" rel="noopener noreferrer" class="yt-link"></a>',
+                        f'<a href="{row["Youtube"]}" target="_blank" rel="noopener" class="yt-link"></a>',
                         "<strong>",
                         row["Artist"],
                         "</strong> – <em>",
