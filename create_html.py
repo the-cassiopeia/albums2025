@@ -222,6 +222,13 @@ HTML_END = """
     }
 
     initializeAlbumData();
+
+    document.addEventListener('click', function (e) {
+      const trigger = document.getElementById('ratingInfoTrigger');
+      if (!trigger.contains(e.target)) {
+        trigger.blur(); // Remove focus = tooltip disappears
+      }
+    });
   </script>
 </body>
 </html>
