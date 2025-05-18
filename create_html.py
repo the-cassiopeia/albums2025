@@ -116,7 +116,7 @@ HTML_START = """
       font-size: .9rem;
       font-style: italic;
     }
-    .yt-link {
+    .ytlink {
       display: inline-block;
       width: 1.3em;
       height: 1.3em;
@@ -237,14 +237,14 @@ def main():
                 "".join(
                     [
                         "      <li>",
-                        f'<a href="{row["Youtube"]}" target="_blank" rel="noopener" class="yt-link"></a>',
-                        "<strong>",
+                        f'<a href="{row["Youtube"]}" target="_blank" rel="noopener" class="ytlink"></a>',
+                        "<b>",
                         row["Artist"],
-                        "</strong> – <em>",
+                        "</b> – <i>",
                         row["Album"],
-                        '</em> <span class="rating">(',
+                        '</i><span class="rating">(',
                         row["Rating"],
-                        '/5)</span> <span class="genre">',
+                        '/5)</span><span class="genre">',
                         row["Genre"],
                         "</span></li>",
                     ]
