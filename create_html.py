@@ -1,10 +1,7 @@
 import csv
-import datetime
 import sys
 
 import minify_html
-
-FORMATTED_DATE = datetime.datetime.now().strftime("%B %d, %Y")
 
 HTML_START = """
 <!doctype html>
@@ -23,13 +20,6 @@ HTML_START = """
       font-family: 'Arial', sans-serif;
     }
     .container { max-width: 100%; }
-    .date { text-align: center; margin: 0; font-size: 1em; }
-    h1 {
-      text-align: center;
-      color: #398c38;
-      margin: 5px 0;
-      font-size: 2rem;
-    }
     h2 {
       color: #398c38;
       font-size: 1.2rem;
@@ -148,16 +138,11 @@ HTML_START = """
     }
   </style>
 </head>
-"""
-
-HTML_BODY = f"""
 <body>
   <div class="container">
-    <h1>Albums 2025</h1>
-    <p class="date">Last updated: {FORMATTED_DATE}</p>
     <div class="filter-container">
       <h2>
-        Personal Album Ranking
+        2025 Album Ranking
         <span class="rating-info-trigger" id="ratingInfoTrigger" role="tooltip" tabindex="0">
           ?
           <div class="rating-tooltip" id="ratingTooltip">
@@ -174,7 +159,6 @@ HTML_BODY = f"""
     </div>
     <ol class="album-list">
 """
-
 
 HTML_END = """
     </ol>
@@ -255,7 +239,7 @@ def main():
             )
 
     html_minified = minify_html.minify(
-        HTML_START + HTML_BODY + "\n".join(HTML_ALBUMS) + HTML_END,
+        HTML_START + "\n".join(HTML_ALBUMS) + HTML_END,
         minify_js=True,
         minify_css=True,
         minify_doctype=True,
