@@ -54,6 +54,9 @@ HTML_START = """
       font-size: 1rem;
       position: relative;
     }
+    .album-list li:hover {
+      background-color: #202b20;
+    }
     .album-list li::before {
       content: counter(album-counter) ".";
       color: #4CAF50;
