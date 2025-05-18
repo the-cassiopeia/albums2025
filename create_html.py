@@ -124,10 +124,12 @@ HTML_START = """
       color: #538146;
     }
 
-    .rating-info-trigger:hover .rating-tooltip {
+    .rating-info-trigger:hover .rating-tooltip,
+    .rating-info-trigger:focus .rating-tooltip,
+    .rating-info-trigger:focus-within .rating-tooltip {
       display: block;
     }
-  
+
     .genre {
       font-style: italic;
       font-size: 0.9rem;
@@ -179,7 +181,7 @@ HTML_BODY = f"""
     <div class="filter-container">
       <h2>
         Personal Album Ranking
-        <span class="rating-info-trigger" id="ratingInfoTrigger" role="tooltip">
+        <span class="rating-info-trigger" id="ratingInfoTrigger" role="tooltip" tabindex="0">
           ?
           <div class="rating-tooltip" id="ratingTooltip">
             <p><strong>Rating Scheme</strong></p>
@@ -220,33 +222,6 @@ HTML_END = """
     }
 
     initializeAlbumData();
-
-    // ========== MOBILE TOOLTIP LOGIC ==========
-
-    const trigger = document.getElementById('ratingInfoTrigger');
-    const tooltip = document.getElementById('ratingTooltip');
-
-    // Toggle tooltip on tap (mobile) or click
-    trigger.addEventListener('click', function (e) {
-      e.stopPropagation(); // Prevent bubbling to document
-      tooltip.style.display = tooltip.style.display === 'block' ? 'none' : 'block';
-    });
-
-    // Desktop hover support
-    trigger.addEventListener('mouseenter', () => {
-      tooltip.style.display = 'block';
-    });
-    trigger.addEventListener('mouseleave', () => {
-      tooltip.style.display = 'none';
-    });
-
-    // Ensure document click listener only fires after this listener completes
-    document.addEventListener('click', function (e) {
-      // Only close if the click wasn't inside the tooltip or trigger
-      if (!trigger.contains(e.target)) {
-        tooltip.style.display = 'none';
-      }
-    });
   </script>
 </body>
 </html>
