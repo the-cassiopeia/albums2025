@@ -50,14 +50,14 @@ HTML_START = """
     .album-list li::before {
       content: counter(album-counter) ".";
       color: #398c38;
-      font-weight: 700;
+      font-weight: bold;
       position: absolute;
       left: 10px;
     }
     .rating {
       color: #398c38;
-      margin-left: 4px;
-      font-weight: 700;
+      margin-left: 6px;
+      font-weight: bold;
     }
     .rating-info-trigger {
       cursor: help;
@@ -70,7 +70,7 @@ HTML_START = """
       height: 1.1em;
       margin-left: 8px;
       font-size: .95em;
-      font-weight: 700;
+      font-weight: bold;
       line-height: 1.1em;
       display: inline-block;
       position: relative;
@@ -229,9 +229,9 @@ def main():
                         row["Artist"],
                         "</b> – <i>",
                         row["Album"],
-                        '</i><span class="rating">(',
+                        '</i><span class="rating">',
                         row["Rating"],
-                        '/5)</span><span class="genre">',
+                        '/5</span><span class="genre">',
                         row["Genre"],
                         "</span></li>",
                     ]
