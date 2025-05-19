@@ -61,18 +61,21 @@ HTML_START = """
     }
     .rating-info-trigger {
       cursor: help;
-      color: #398c38;
+      color: #EDEDED;
+      background-color: #4CAF50;
       text-align: center;
       user-select: none;
-      border: 2px solid #398c38;
+      border: none;
       border-radius: 50%;
       width: 1.1em;
       height: 1.1em;
       margin-left: 8px;
       font-size: .95em;
       font-weight: bold;
-      line-height: 1.1em;
-      display: inline-block;
+      line-height: 1.1em; /* or 1.3 */
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
       position: relative;
     }
     .rating-tooltip {
@@ -81,10 +84,10 @@ HTML_START = """
       top: 125%;
       left: 50%;
       transform: translate(-50%);
-      background: #2a2a2a;
       color: #EDEDED;
-      border: 2px solid #398c38;
-      border-radius: 8px;
+      background: #2a2a2a;
+      border: 1px solid #555;
+      border-radius: 12px;
       width: 320px;
       padding: 3px 10px;
       font-size: 1rem;
