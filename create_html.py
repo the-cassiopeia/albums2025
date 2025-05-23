@@ -9,15 +9,16 @@ HTML_START = """
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width,initial-scale=1.0" name="viewport">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <title>Album Ratings</title>
   <style>
     body {
       color: #EDEDED;
       background: #111;
-      width: 660px;
+      width: 610px;
       margin: 0 auto;
       padding: 0;
-      font-family: 'Arial', sans-serif;
+      font-family: 'Roboto', sans-serif;
     }
     .container { max-width: 100%; }
     h2 {
@@ -82,7 +83,7 @@ HTML_START = """
       z-index: 100;
       text-align: left;
       background: rgba(42, 42, 42, 0.65);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
       border: 1px solid rgba(85, 85, 85, 0.3);
       border-radius: 12px;
       width: 320px;
@@ -107,14 +108,14 @@ HTML_START = """
     .genre {
       color: #888;
       margin-left: auto;
-      font-size: .9rem;
+      font-size: .8rem;
       font-style: italic;
     }
-    .ytl {
+    .YT {
       display: inline-block;
       width: 1.3em;
       height: 1.3em;
-      background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjY0IgogICBoZWlnaHQ9IjY0IgogICB2aWV3Qm94PSIwIDAgNjQgNjQiCiAgIHZlcnNpb249IjEuMSIKICAgaWQ9InN2ZzEiCiAgIHNvZGlwb2RpOmRvY25hbWU9InlvdXR1YmUtcm91bmQtaWNvbi1vcmlnaW5hbC5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuNC4yIChmNDMyN2Y0LCAyMDI1LTA1LTEzKSIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzMSIgLz4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzEiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjMDAwMDAwIgogICAgIGJvcmRlcm9wYWNpdHk9IjAuMjUiCiAgICAgaW5rc2NhcGU6c2hvd3BhZ2VzaGFkb3c9IjIiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIwIgogICAgIGlua3NjYXBlOmRlc2tjb2xvcj0iI2QxZDFkMSIKICAgICBpbmtzY2FwZTp6b29tPSI5LjQzNzUiCiAgICAgaW5rc2NhcGU6Y3g9IjExLjYwMjY0OSIKICAgICBpbmtzY2FwZTpjeT0iOS41MzY0MjM4IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMjU2MCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxNDE3IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIyNTUyIgogICAgIGlua3NjYXBlOndpbmRvdy15PSItOCIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9InN2ZzEiIC8+CiAgPGNpcmNsZQogICAgIGN4PSIzMiIKICAgICBjeT0iMzIiCiAgICAgcj0iMzAiCiAgICAgZmlsbD0iI2U0MzUzNSIKICAgICBpZD0iY2lyY2xlMSIKICAgICBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7ZmlsbDojY2QxYzFjO2ZpbGwtb3BhY2l0eToxIiAvPgogIDxwb2x5Z29uCiAgICAgZmlsbD0iI2ZmZmZmZiIKICAgICBwb2ludHM9IjI0LDIwIDQ1LDMxLjc5OCAyNCw0NCAiCiAgICAgaWQ9InBvbHlnb24xIgogICAgIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZCIKICAgICB0cmFuc2Zvcm09Im1hdHJpeCgxLjE5MTczNzYsMCwwLDEuMTY5ODA0LC02LjYwMTcwMjksLTUuNDg0NjIwMSkiIC8+Cjwvc3ZnPgo=) 0 0 / contain no-repeat;
+      background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzAiIGZpbGw9IiNjZDFjMWMiLz48cG9seWdvbiBwb2ludHM9IjIyLDE2IDQ4LDMyIDIyLDQ4IiBmaWxsPSIjZmZmIi8+PC9zdmc+) 0 0 / contain no-repeat;
       vertical-align: text-top;
     }
     .filter-container {
@@ -132,7 +133,7 @@ HTML_START = """
       border-radius: 20px;
       width: 150px;
       padding: 6px 10px;
-      font-size: .9rem;
+      font-size: .85rem;
       font-style: italic;
     }
   </style>
@@ -146,11 +147,11 @@ HTML_START = """
           ?
           <div class="rating-tooltip" id="ratingTooltip">
             <p><strong>Rating Scheme</strong></p>
-            <p><strong>5/5</strong> – amazing – AOTY contender</p>
-            <p><strong>4/5</strong> – great – very memorable</p>
-            <p><strong>3/5</strong> – pretty good – would listen again</p>
-            <p><strong>2/5</strong> – disappointing – won't listen again</p>
-            <p><strong>1/5</strong> – bad – has major issues</p>
+            <p><strong>5/5</strong> - amazing - AOTY contender</p>
+            <p><strong>4/5</strong> - great - very memorable</p>
+            <p><strong>3/5</strong> - pretty good - would listen again</p>
+            <p><strong>2/5</strong> - not for me - won't listen again</p>
+            <p><strong>1/5</strong> - bad - has major issues</p>
           </div>
         </span>
       </h2>
@@ -163,6 +164,11 @@ HTML_END = """
     </ol>
   </div>
   <script defer>
+    document.querySelectorAll('a.YT').forEach(link => {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener');
+    });
+
     const genreSearchInput = document.getElementById('genreSearch');
     const ratingInfoTrigger = document.getElementById('ratingInfoTrigger');
     let albumData = [];
@@ -204,13 +210,15 @@ def main():
         for row in reader:
             try:
                 assert len(row) == 5
-                assert row["Artist"] is not None
-                assert row["Album"] is not None
-                assert row["Rating"] is not None
-                assert 1 <= float(row["Rating"]) <= 5
-                assert row["Genre"] is not None
-                assert row["Youtube"] is not None
-                assert row["Youtube"].startswith("https://www.youtube.com/watch?v=")
+                assert row["Artist"].strip() is not None
+                assert row["Album"].strip() is not None
+                assert row["Rating"].strip() is not None
+                assert 1 <= float(row["Rating"].strip()) <= 5
+                assert row["Genre"].strip() is not None
+                assert row["Youtube"].strip() is not None
+                assert (
+                    row["Youtube"].strip().startswith("https://www.youtube.com/watch?v=")
+                )
                 assert row["Youtube"] not in all_youtubes
             except (AssertionError, ValueError):
                 print("Error while parsing the following row:")
@@ -218,20 +226,21 @@ def main():
                 sys.exit(1)
 
             all_youtubes.add(row["Youtube"])
+            ytb_shortened = "https://youtu.be/" + row["Youtube"].strip().removeprefix(
+                "https://www.youtube.com/watch?v="
+            )
 
             HTML_ALBUMS.append(
                 "".join(
                     [
-                        "      <li>",
-                        f'<a href="{row["Youtube"]}" target="_blank" rel="noopener" class="ytl"></a>',
-                        "<b>",
-                        row["Artist"],
-                        "</b> – <i>",
-                        row["Album"],
+                        f'      <li><a href="{ytb_shortened}" class="YT"></a><b>',
+                        row["Artist"].strip(),
+                        "</b> - <i>",
+                        row["Album"].strip(),
                         '</i><span class="rating">',
-                        row["Rating"],
+                        row["Rating"].strip(),
                         '/5</span><span class="genre">',
-                        row["Genre"],
+                        row["Genre"].strip(),
                         "</span></li>",
                     ]
                 )
