@@ -9,6 +9,9 @@ HTML_START = """
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width,initial-scale=1.0" name="viewport">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <title>Album Ratings</title>
   <style>
