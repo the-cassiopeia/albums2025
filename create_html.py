@@ -18,7 +18,7 @@ HTML_START = """
     body {
       color: #EDEDED;
       background: #111;
-      width: 600px;
+      width: 595px;
       margin: 0 auto;
       padding: 0;
       font-family: 'Source Sans 3', sans-serif;
@@ -44,7 +44,7 @@ HTML_START = """
       display: flex;
       align-items: center;
       gap: 4px;
-      padding: 3px 10px 3px 45px;
+      padding: 3px 10px 3px 42px;
       font-size: 1rem;
       position: relative;
     }
