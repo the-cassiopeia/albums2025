@@ -84,9 +84,8 @@ HTML_START = """
       color: #ededed;
       z-index: 100;
       text-align: left;
-      background: #2d2d2d77;
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(85, 85, 85, 0.3);
+      background: #2d2d2d;
+      box-shadow: 0 0 12px rgba(45, 45, 45, 0.9);
       border-radius: 6px;
       width: 320px;
       padding: 5px 10px;
@@ -154,7 +153,7 @@ HTML_START = """
             <p><strong>5/5</strong> - amazing - AOTY contender</p>
             <p><strong>4/5</strong> - great - very memorable</p>
             <p><strong>3/5</strong> - pretty good - would listen again</p>
-            <p><strong>2/5</strong> - not for me - won't listen again</p>
+            <p><strong>2/5</strong> - forgettable - won't listen again</p>
             <p><strong>1/5</strong> - bad - has major issues</p>
           </div>
         </span>
