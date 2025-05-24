@@ -48,6 +48,7 @@ HTML_START = """
     }
     .album-list li:hover {
       background: #2d2d2d;
+      box-shadow: 0 0 12px rgba(45, 45, 45, 0.9);
     }
     .album-list li::before {
       content: counter(album-counter) ".";
@@ -89,8 +90,6 @@ HTML_START = """
       border-radius: 6px;
       width: 320px;
       padding: 5px 10px;
-      font-size: 1rem;
-      font-weight: 400;
       display: none;
       position: absolute;
       top: 125%;
@@ -119,6 +118,10 @@ HTML_START = """
       background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzAiIGZpbGw9IiNjZDFjMWMiLz48cG9seWdvbiBwb2ludHM9IjIyLDE2IDQ4LDMyIDIyLDQ4IiBmaWxsPSIjZmZmIi8+PC9zdmc+) 0 0 / contain no-repeat;
       vertical-align: text-top;
     }
+    .YT:hover {
+      filter: brightness(1.2);
+      transform: scale(1.2);
+    }
     .filter-container {
       display: flex;
       justify-content: space-between;
@@ -132,7 +135,7 @@ HTML_START = """
       background: #2d2d2d;
       border: 0;
       border-radius: 6px;
-      width: 150px;
+      width: 125px;
       padding: 6px 10px;
       font-size: .85rem;
       font-style: italic;
