@@ -17,8 +17,8 @@ HTML_START = """
   <style>
     body {
       color: #EDEDED;
-      background: #111;
-      width: 595px;
+      background: #161616;
+      width: 590px;
       margin: 0 auto;
       padding: 0;
       font-family: 'Source Sans 3', sans-serif;
@@ -33,14 +33,12 @@ HTML_START = """
       counter-reset: album-counter;
       display: flex;
       flex-direction: column;
-      gap: 3px;
       padding: 0;
       list-style: none;
     }
     .album-list li {
       counter-increment: album-counter;
-      background: #1d1d1d;
-      border-radius: 20px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -49,7 +47,7 @@ HTML_START = """
       position: relative;
     }
     .album-list li:hover {
-      background: #2a2a2a;
+      background: #2d2d2d;
     }
     .album-list li::before {
       content: counter(album-counter) ".";
@@ -85,10 +83,10 @@ HTML_START = """
       color: #ededed;
       z-index: 100;
       text-align: left;
-      background: rgba(42, 42, 42, 0.65);
+      background: #2d2d2d77;
       backdrop-filter: blur(15px);
       border: 1px solid rgba(85, 85, 85, 0.3);
-      border-radius: 12px;
+      border-radius: 6px;
       width: 320px;
       padding: 5px 10px;
       font-size: 1rem;
@@ -131,9 +129,9 @@ HTML_START = """
       text-align: center;
       box-sizing: border-box;
       color: #EDEDED;
-      background: #1d1d1d;
+      background: #2d2d2d;
       border: 0;
-      border-radius: 20px;
+      border-radius: 6px;
       width: 150px;
       padding: 6px 10px;
       font-size: .85rem;
