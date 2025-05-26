@@ -28,13 +28,13 @@ def main():
                 assert row["Genre"].strip() is not None
                 assert row["Youtube"].strip() is not None
                 assert row["Youtube"].startswith(YT_PREFIX)
-                assert row["Youtube"] not in all_youtubes
+                assert row["Youtube"].strip() not in all_youtubes
             except (AssertionError, ValueError):
                 print("Error while parsing the following row:")
                 print(row)
                 sys.exit(1)
 
-            all_youtubes.add(row["Youtube"])
+            all_youtubes.add(row["Youtube"].strip())
 
             html_albums.append(
                 LI_TEMPLATE.format(
