@@ -30,7 +30,7 @@ def main():
                 assert row["Youtube"].startswith(YT_PREFIX)
                 assert row["Youtube"].strip() not in all_youtubes
             except (AssertionError, ValueError):
-                print("Error while parsing the following row:")
+                print("Error while parsing the following album:")
                 print(row)
                 sys.exit(1)
 
