@@ -59,7 +59,6 @@ def main():
                 ),
                 minify_js=True,
                 minify_css=True,
-                minify_doctype=True,
                 remove_processing_instructions=True,
             )
         )
