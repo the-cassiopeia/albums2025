@@ -1,6 +1,8 @@
 import csv
 import sys
 
+import minify_html
+
 
 def main():
     YT_PREFIX = "https://www.youtube.com/watch?v="
@@ -51,7 +53,14 @@ def main():
 
     with open("index.html", "w", encoding="utf-8") as fout:
         fout.write(
-            html_template.replace("<!--PLACEHOLDER_ALBUM_LIST-->", "\n".join(html_albums))
+            minify_html.minify(
+                html_template.replace(
+                    "<!--PLACEHOLDER_ALBUM_LIST-->", "\n".join(html_albums)
+                ),
+                minify_js=True,
+                minify_css=True,
+                remove_processing_instructions=True,
+            )
         )
 
 
