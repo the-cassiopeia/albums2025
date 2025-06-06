@@ -199,13 +199,14 @@
         </ol>
     </div>
     <script defer>
-        let albumData = [];
-        let currentActiveGenreFilter = '';
+        const albumData = [];
+        const activeGenreFilters = new Set();
+        const genreLabelElements = new Map();
 
         const elements = {
-            albumList: null,
-            filterContainer: null,
-            ratingInfoTrigger: null
+            albumList: document.querySelector('.album-list'),
+            filterContainer: document.querySelector('.filter-container'),
+            ratingInfoTrigger: document.getElementById('ratingInfoTrigger')
         };
 
         const genreColors = [
@@ -215,75 +216,66 @@
             '#346086', '#974343', '#17827B', '#9F7D17', '#C04A36', '#668B66'
         ];
 
-        function initializeElements() {
-            elements.albumList = document.querySelector('.album-list');
-            elements.filterContainer = document.querySelector('.filter-container');
-            elements.ratingInfoTrigger = document.getElementById('ratingInfoTrigger');
-        }
-
         function initializeAlbumData() {
             if (!elements.albumList) return;
-
-            albumData = Array.from(elements.albumList.querySelectorAll('li')).map(element => {
-                const genreElement = element.querySelector('.genre');
-                const genreText = genreElement ? genreElement.textContent.toLowerCase() : '';
-                const genreArray = genreText
-                    ? genreText.split('/').map(g => g.trim()).filter(g => g)
-                    : [];
-
+            albumData.push(...Array.from(elements.albumList.querySelectorAll('li'), element => {
+                const genreText = element.querySelector('.genre')?.textContent.toLowerCase() || '';
                 return {
                     element,
-                    genreText,
-                    genreArray
+                    genreArray: genreText ? genreText.split('/').map(g => g.trim()).filter(Boolean) : []
                 };
-            });
+            }));
         }
 
         function getContrastColor(hexColor) {
-            const hex = hexColor.replace('#', '');
+            const hex = hexColor.slice(1);
             const r = parseInt(hex.substr(0, 2), 16);
             const g = parseInt(hex.substr(2, 2), 16);
             const b = parseInt(hex.substr(4, 2), 16);
-            const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-            return yiq >= 128 ? '#161616' : '#ededed';
+            return (r * 299 + g * 587 + b * 114) / 1000 >= 128 ? '#161616' : '#ededed';
         }
 
         function extractGenres() {
             const genreCounts = new Map();
 
-            albumData.forEach(({ genreArray }) => {
-                genreArray.forEach(genre => {
+            albumData.flatMap(({ genreArray }) => genreArray)
+                .forEach(genre => {
                     const lowerGenre = genre.toLowerCase();
-                    if (!genreCounts.has(lowerGenre)) {
-                        genreCounts.set(lowerGenre, { count: 0, originalCase: genre });
-                    }
-                    const genreData = genreCounts.get(lowerGenre);
-                    genreData.count++;
-                    if (genre.length < genreData.originalCase.length) {
-                        genreData.originalCase = genre;
+                    const existing = genreCounts.get(lowerGenre);
+
+                    if (existing) {
+                        existing.count++;
+                        if (genre.length < existing.originalCase.length) {
+                            existing.originalCase = genre;
+                        }
+                    } else {
+                        genreCounts.set(lowerGenre, { count: 1, originalCase: genre });
                     }
                 });
-            });
 
-            return Array.from(genreCounts.entries())
-                .map(([lowerName, { count, originalCase }]) => ({
-                    name: originalCase,
-                    lowerName,
-                    count
-                }))
-                .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+            return Array.from(genreCounts.entries(), ([lowerName, { count, originalCase }]) => ({
+                name: originalCase,
+                lowerName,
+                count
+            })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
         }
 
         function createGenreLabel(genre, index) {
             const label = document.createElement('span');
-            label.className = 'genre-label';
-            label.textContent = `${genre.name} (${genre.count})`;
-            label.setAttribute('data-genre', genre.lowerName);
-
             const color = genreColors[index % genreColors.length];
-            label.style.backgroundColor = color;
-            label.style.color = getContrastColor(color);
 
+            Object.assign(label, {
+                className: 'genre-label',
+                textContent: `${genre.name} (${genre.count})`
+            });
+
+            label.setAttribute('data-genre', genre.lowerName);
+            Object.assign(label.style, {
+                backgroundColor: color,
+                color: getContrastColor(color)
+            });
+
+            genreLabelElements.set(genre.lowerName, label);
             return label;
         }
 
@@ -297,38 +289,44 @@
             container.className = 'genre-labels-container';
 
             container.addEventListener('click', (e) => {
-                if (e.target.classList.contains('genre-label')) {
-                    const genreName = e.target.getAttribute('data-genre');
-                    currentActiveGenreFilter = currentActiveGenreFilter === genreName ? '' : genreName;
-                    filterByGenre();
+                const label = e.target.closest('.genre-label');
+                if (!label) return;
+
+                const genreName = label.getAttribute('data-genre');
+                if (activeGenreFilters.has(genreName)) {
+                    activeGenreFilters.delete(genreName);
+                } else {
+                    activeGenreFilters.add(genreName);
                 }
+                filterByGenre();
             });
 
+            const fragment = document.createDocumentFragment();
             genres.forEach((genre, index) => {
-                container.appendChild(createGenreLabel(genre, index));
+                fragment.appendChild(createGenreLabel(genre, index));
             });
+            container.appendChild(fragment);
 
             elements.filterContainer.parentNode.insertBefore(container, elements.albumList);
         }
 
         function filterByGenre() {
-            const activeClass = 'active';
+            for (const [genreName, label] of genreLabelElements) {
+                label.classList.toggle('active', activeGenreFilters.has(genreName));
+            }
 
-            document.querySelectorAll('.genre-label').forEach(label => {
-                const genreName = label.getAttribute('data-genre');
-                label.classList.toggle(activeClass, genreName === currentActiveGenreFilter);
-            });
+            const hasActiveFilters = activeGenreFilters.size > 0;
 
-            albumData.forEach(({ element, genreArray }) => {
-                const shouldShow = !currentActiveGenreFilter || genreArray.includes(currentActiveGenreFilter);
+            for (const { element, genreArray } of albumData) {
+                const shouldShow = !hasActiveFilters || genreArray.some(genre => activeGenreFilters.has(genre));
                 element.style.display = shouldShow ? 'flex' : 'none';
-            });
+            }
         }
 
         function setupYouTubeLinks() {
             document.querySelectorAll('a.YT').forEach(link => {
-                link.setAttribute('target', '_blank');
-                link.setAttribute('rel', 'noopener');
+                link.target = '_blank';
+                link.rel = 'noopener';
             });
         }
 
@@ -339,11 +337,10 @@
                 if (!elements.ratingInfoTrigger.contains(e.target)) {
                     elements.ratingInfoTrigger.blur();
                 }
-            });
+            }, { passive: true });
         }
 
         function init() {
-            initializeElements();
             initializeAlbumData();
             setupGenreLabels();
             filterByGenre();
@@ -351,7 +348,11 @@
             setupTooltipBehavior();
         }
 
-        init();
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 
