@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBmaWxsPSIjYzgzNzM3IiBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiLz48ZyB0cmFuc2Zvcm09Im1hdHJpeCguMDMyODE2NjEgMCAwIC4wMzM2NDAwMyA1LjQxNjQ5MTkgNi42ODQ0NjcpIiBmaWxsPSIjZmZhYWFhIj48cGF0aCBkPSJNMjk3LjMgNTUwLjg3Yy0xMy43OC0xNS40NC00OC4xNy00NS41My03Ni40NC02Ni44Ny04My43NC02My4yNS05NS4xNC03Mi40LTEyOS4xNC0xMDMuNzEtNjIuNjgtNTcuNzItODkuMzEtMTE1LjcxLTg5LjIyLTE5NC4zNC4wNC0zOC4zOCAyLjY2LTUzLjE3IDEzLjQxLTc1LjggMTguMjQtMzguMzkgNDUuMS02Ni45MSA3OS40NS04NC4zNiAyNC4zMi0xMi4zNiAzNi4zMi0xNy44NCA3Ni45NC0xOC4wNyA0Mi40OS0uMjMgNTEuNDQgNC43MiA3Ni40MyAxOC40NSAzMC40MiAxNi43MSA2MS43NCA1Mi40NCA2OC4yMSA3Ny44MWwzLjEgMTUuNjcgOS44Ni0yMS41OGM1NS43Mi0xMjEuOTcgMjMzLjYtMTIwLjE1IDI5NS41IDMuMDMgMTkuNjQgMzkuMDggMjEuNzkgMTIyLjUxIDQuMzggMTY5LjUxLTIyLjcyIDYxLjMxLTY1LjM4IDEwOC4wNS0xNjQuMDEgMTc5LjY4LTY0LjY4IDQ2Ljk3LTEzNy44OCAxMTguMDUtMTQyLjk4IDEyOC4wMy01LjkyIDExLjU5LS4yOCAxLjgyLTI2LjQxLTI3LjQ2eiIvPjwvZz48L3N2Zz4=">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Album Ratings</title>
     <style>
         html {
@@ -175,6 +176,16 @@
         .genre-label.active {
             outline: 3px solid #ededed;
         }
+
+        .chart-container {
+            position: relative;
+            margin: 20px auto;
+            padding: 0px 0px 30px 0px;
+            background: #161616;
+            border-radius: 10px;
+            max-width: 620px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -199,8 +210,19 @@
         <ol class="album-list">
             <!--PLACEHOLDER_ALBUM_LIST-->
         </ol>
+        <div class="chart-container">
+            <h2 style="margin-bottom: 15px;">Genre Count Analysis (5+ Appearances)</h2>
+            <canvas id="genreChart"></canvas>
+        </div>
     </div>
     <script defer>
+        const GENRE_COLORS = [
+            '#4782C0', '#47A082', '#8247C0', '#C08247', '#C04782', '#47C0C0',
+            '#377A3A', '#C09000', '#B7302A', '#1770B7', '#005A5A', '#631FAD',
+            '#886008', '#AE5C5C', '#5A4BAE', '#2C8252', '#C0A400', '#903E9F',
+            '#346086', '#974343', '#17827B', '#9F7D17', '#C04A36', '#668B66'
+        ];
+        let chartInstance = null;
         const albumData = [];
         const activeGenreFilters = new Set();
         const genreLabelElements = new Map();
@@ -208,146 +230,204 @@
         const elements = {
             albumList: document.querySelector('.album-list'),
             filterContainer: document.querySelector('.filter-container'),
-            ratingInfoTrigger: document.getElementById('ratingInfoTrigger')
+            ratingInfoTrigger: document.getElementById('ratingInfoTrigger'),
+            genreChartCanvas: document.getElementById('genreChart')
         };
-
-        const genreColors = [
-            '#4782C0', '#47A082', '#8247C0', '#C08247', '#C04782', '#47C0C0',
-            '#377A3A', '#C09000', '#B7302A', '#1770B7', '#005A5A', '#631FAD',
-            '#886008', '#AE5C5C', '#5A4BAE', '#2C8252', '#C0A400', '#903E9F',
-            '#346086', '#974343', '#17827B', '#9F7D17', '#C04A36', '#668B66'
-        ];
 
         function initializeAlbumData() {
             if (!elements.albumList) return;
-            albumData.push(...Array.from(elements.albumList.querySelectorAll('li'), element => {
+
+            const albumElements = Array.from(elements.albumList.querySelectorAll('li'));
+
+            for (const element of albumElements) {
                 const genreText = element.querySelector('.genre')?.textContent.toLowerCase() || '';
-                return {
+                const ratingText = element.querySelector('.rating')?.textContent || '0/5';
+                const ratingValue = parseFloat(ratingText.split('/')[0]);
+
+                albumData.push({
                     element,
+                    rating: ratingValue,
                     genreArray: genreText ? genreText.split('/').map(g => g.trim()).filter(Boolean) : []
-                };
-            }));
+                });
+            }
         }
 
-        function getContrastColor(hexColor) {
-            const hex = hexColor.slice(1);
-            const r = parseInt(hex.substr(0, 2), 16);
-            const g = parseInt(hex.substr(2, 2), 16);
-            const b = parseInt(hex.substr(4, 2), 16);
-            return (r * 299 + g * 587 + b * 114) / 1000 >= 128 ? '#161616' : '#ededed';
-        }
-
-        function extractGenres() {
+        function extractAllGenres() {
             const genreCounts = new Map();
 
-            albumData.flatMap(({ genreArray }) => genreArray)
-                .forEach(genre => {
-                    const lowerGenre = genre.toLowerCase();
-                    const existing = genreCounts.get(lowerGenre);
+            for (const { genreArray } of albumData) {
+                for (const genre of genreArray) {
+                    const count = genreCounts.get(genre) || 0;
+                    genreCounts.set(genre, count + 1);
+                }
+            }
 
-                    if (existing) {
-                        existing.count++;
-                        if (genre.length < existing.originalCase.length) {
-                            existing.originalCase = genre;
-                        }
-                    } else {
-                        genreCounts.set(lowerGenre, { count: 1, originalCase: genre });
-                    }
-                });
-
-            return Array.from(genreCounts.entries(), ([lowerName, { count, originalCase }]) => ({
-                name: originalCase,
-                lowerName,
+            return Array.from(genreCounts.entries(), ([name, count]) => ({
+                name: name.charAt(0).toLowerCase() + name.slice(1),
+                lowerName: name,
                 count
-            })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
-        }
-
-        function createGenreLabel(genre, index) {
-            const label = document.createElement('span');
-            const color = genreColors[index % genreColors.length];
-
-            Object.assign(label, {
-                className: 'genre-label',
-                textContent: `${genre.name} (${genre.count})`
-            });
-
-            label.setAttribute('data-genre', genre.lowerName);
-            Object.assign(label.style, {
-                backgroundColor: color,
-                color: getContrastColor(color)
-            });
-
-            genreLabelElements.set(genre.lowerName, label);
-            return label;
+            }))
+                .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
         }
 
         function setupGenreLabels() {
-            if (!albumData.length || !elements.albumList || !elements.filterContainer) return;
-
-            const genres = extractGenres();
-            if (genres.length === 0) return;
+            const genres = extractAllGenres();
+            if (genres.length === 0 || !elements.albumList) return;
 
             const container = document.createElement('div');
             container.className = 'genre-labels-container';
 
-            container.addEventListener('click', (e) => {
-                const label = e.target.closest('.genre-label');
-                if (!label) return;
-
-                const genreName = label.getAttribute('data-genre');
-                if (activeGenreFilters.has(genreName)) {
-                    activeGenreFilters.delete(genreName);
-                } else {
-                    activeGenreFilters.add(genreName);
-                }
-                filterByGenre();
-            });
-
             const fragment = document.createDocumentFragment();
             genres.forEach((genre, index) => {
-                fragment.appendChild(createGenreLabel(genre, index));
-            });
-            container.appendChild(fragment);
+                const label = document.createElement('span');
+                const color = GENRE_COLORS[index % GENRE_COLORS.length];
 
+                label.className = 'genre-label';
+                label.textContent = `${genre.name} (${genre.count})`;
+                label.setAttribute('data-genre', genre.lowerName);
+                label.style.backgroundColor = color;
+                label.style.color = (parseInt(color.slice(1), 16) > 0xffffff / 2) ? '#161616' : '#ededed';
+
+                genreLabelElements.set(genre.lowerName, label);
+                fragment.appendChild(label);
+            });
+
+            container.appendChild(fragment);
             elements.filterContainer.parentNode.insertBefore(container, elements.albumList);
+
+            container.addEventListener('click', handleGenreFilterClick);
         }
 
-        function filterByGenre() {
-            for (const [genreName, label] of genreLabelElements) {
-                label.classList.toggle('active', activeGenreFilters.has(genreName));
+        function handleGenreFilterClick(e) {
+            const label = e.target.closest('.genre-label');
+            if (!label) return;
+
+            const genreName = label.getAttribute('data-genre');
+            if (activeGenreFilters.has(genreName)) {
+                activeGenreFilters.delete(genreName);
+            } else {
+                activeGenreFilters.add(genreName);
             }
+            applyAlbumFilters();
+        }
+
+        function applyAlbumFilters() {
+            genreLabelElements.forEach((label, genreName) => {
+                label.classList.toggle('active', activeGenreFilters.has(genreName));
+            });
 
             const hasActiveFilters = activeGenreFilters.size > 0;
 
             for (const { element, genreArray } of albumData) {
-                const shouldShow = !hasActiveFilters || genreArray.some(genre => activeGenreFilters.has(genre));
-                element.style.display = shouldShow ? 'flex' : 'none';
+                const isVisible = !hasActiveFilters || genreArray.some(genre => activeGenreFilters.has(genre));
+                element.style.display = isVisible ? 'flex' : 'none';
             }
         }
 
-        function setupYouTubeLinks() {
-            document.querySelectorAll('a.YT').forEach(link => {
-                link.target = '_blank';
-                link.rel = 'noopener';
+        function createGenreChart() {
+            if (!elements.genreChartCanvas) return;
+            const genreData = new Map();
+
+            for (const { genreArray, rating } of albumData) {
+                for (const genre of genreArray) {
+                    if (!genreData.has(genre)) {
+                        genreData.set(genre, { high: 0, low: 0, total: 0 });
+                    }
+                    const counts = genreData.get(genre);
+                    counts.total++;
+                    if (rating >= 3) {
+                        counts.high++;
+                    } else {
+                        counts.low++;
+                    }
+                }
+            }
+
+            const sortedGenres = [...genreData.entries()]
+                .filter(([, data]) => data.total >= 5)
+                .sort((a, b) => (b[1].high - a[1].high) || (b[1].total - a[1].total));
+
+            const labels = sortedGenres.map(([name]) => name.charAt(0).toLowerCase() + name.slice(1));
+            const highRatingsData = sortedGenres.map(([, data]) => data.high);
+            const lowRatingsData = sortedGenres.map(([, data]) => data.low);
+
+            const canvasParent = elements.genreChartCanvas.parentElement;
+            canvasParent.style.height = `${labels.length * 27}px`;
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(elements.genreChartCanvas.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Rating ≥ 3',
+                        data: highRatingsData,
+                        backgroundColor: '#5cb85c'
+                    }, {
+                        label: 'Rating < 3',
+                        data: lowRatingsData,
+                        backgroundColor: '#aa1c1c'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: true },
+                    plugins: {
+                        legend: { position: 'top', labels: { color: '#ededed' } },
+                        tooltip: {
+                            backgroundColor: '#2d2d2d',
+                            borderColor: '#555',
+                            borderWidth: 1,
+                            padding: 5,
+                            cornerRadius: 4,
+                            displayColors: true,
+                            position: 'nearest'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            position: 'top',
+                            stacked: true,
+                            ticks: { color: '#ededed', stepSize: 2 },
+                            grid: { color: '#2d2d2d' }
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: { color: '#ededed', autoSkip: false },
+                            grid: { display: false }
+                        }
+                    }
+                }
             });
         }
 
         function setupTooltipBehavior() {
             if (!elements.ratingInfoTrigger) return;
+            const tooltip = elements.ratingInfoTrigger.querySelector('.rating-tooltip');
 
-            document.addEventListener('click', (e) => {
-                if (!elements.ratingInfoTrigger.contains(e.target)) {
-                    elements.ratingInfoTrigger.blur();
-                }
-            }, { passive: true });
+            elements.ratingInfoTrigger.addEventListener('focusin', () => {
+                tooltip.style.display = 'block';
+            });
+            elements.ratingInfoTrigger.addEventListener('focusout', () => {
+                tooltip.style.display = 'none';
+            });
         }
 
         function init() {
             initializeAlbumData();
             setupGenreLabels();
-            filterByGenre();
-            setupYouTubeLinks();
+            applyAlbumFilters();
             setupTooltipBehavior();
+            createGenreChart();
+            document.querySelectorAll('a.YT').forEach(link => {
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+            });
         }
 
         if (document.readyState === 'loading') {
