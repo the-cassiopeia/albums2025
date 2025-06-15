@@ -155,7 +155,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
             margin-bottom: 15px;
         }
 
@@ -217,9 +217,9 @@
     </div>
     <script defer>
         const GENRE_COLORS = [
-            '#4782C0', '#47A082', '#8247C0', '#C08247', '#C04782', '#47C0C0',
+            '#4782C0', '#47A082', '#8247C0', '#BD7C3E', '#C04782', '#2B9494',
             '#377A3A', '#C09000', '#B7302A', '#1770B7', '#005A5A', '#631FAD',
-            '#886008', '#AE5C5C', '#5A4BAE', '#2C8252', '#C0A400', '#903E9F',
+            '#886008', '#AE5C5C', '#5A4BAE', '#2C8252', '#DB5902', '#903E9F',
             '#346086', '#974343', '#17827B', '#9F7D17', '#C04A36', '#668B66'
         ];
         let chartInstance = null;
@@ -286,7 +286,7 @@
                 label.textContent = `${genre.name} (${genre.count})`;
                 label.setAttribute('data-genre', genre.lowerName);
                 label.style.backgroundColor = color;
-                label.style.color = (parseInt(color.slice(1), 16) > 0xffffff / 2) ? '#161616' : '#ededed';
+                label.style.color = '#ededed';
 
                 genreLabelElements.set(genre.lowerName, label);
                 fragment.appendChild(label);
@@ -385,8 +385,7 @@
                             borderWidth: 1,
                             padding: 5,
                             cornerRadius: 4,
-                            displayColors: true,
-                            position: 'nearest'
+                            displayColors: true
                         }
                     },
                     scales: {
