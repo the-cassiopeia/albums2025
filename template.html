@@ -210,7 +210,7 @@
             <!--PLACEHOLDER_ALBUM_LIST-->
         </ol>
         <div class="chart-container">
-            <h2 style="margin-top: 30px;">Genre Count Analysis (5+ Appearances)</h2>
+            <h2 style="margin-top: 30px;">Genre Count Analysis</h2>
             <canvas id="genreChart"></canvas>
         </div>
     </div>
@@ -362,11 +362,11 @@
                 data: {
                     labels,
                     datasets: [{
-                        label: 'Rating ≥ 3',
+                        label: 'Rating ≥ 3 (good)',
                         data: highRatingsData,
                         backgroundColor: '#4FD1C5'
                     }, {
-                        label: 'Rating < 3',
+                        label: 'Rating < 3 (not good)',
                         data: lowRatingsData,
                         backgroundColor: '#E53E3E'
                     }]
