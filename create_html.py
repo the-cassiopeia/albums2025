@@ -18,6 +18,8 @@ def main():
 
     with open("albums.csv", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
+        prev_rating = 5
+
         for row in reader:
             try:
                 assert len(row) == 5
@@ -25,6 +27,7 @@ def main():
                 assert row["Album"].strip() is not None
                 assert row["Rating"].strip() is not None
                 assert 1 <= float(row["Rating"].strip()) <= 5
+                assert float(row["Rating"].strip()) <= prev_rating
                 assert row["Genre"].strip() is not None
                 assert row["Youtube"].strip() is not None
                 assert row["Youtube"].startswith(YT_PREFIX)
@@ -35,6 +38,7 @@ def main():
                 sys.exit(1)
 
             all_youtubes.add(row["Youtube"].strip())
+            prev_rating = float(row["Rating"].strip())
 
             html_albums.append(
                 LI_TEMPLATE.format(
